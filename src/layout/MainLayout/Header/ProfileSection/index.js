@@ -55,16 +55,21 @@ const ProfileSection = () => {
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
-    const handleLogout = async () => {
-        console.log('Logout');
-    };
-
+    // const handleLogout = async () => {
+    //     console.log('Logout');
+    // };
+    const logoutUser = () => {
+		localStorage.clear()
+		navigate("/login")
+	}
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
         setOpen(false);
     };
+
+    const userObject = JSON.parse(localStorage.getItem("userObject"))
 
     const handleListItemClick = (event, index, route = '') => {
         setSelectedIndex(index);
@@ -109,6 +114,7 @@ const ProfileSection = () => {
                         lineHeight: 0
                     }
                 }}
+                   
                 icon={
                     <Avatar
                         src={User1}
@@ -123,6 +129,7 @@ const ProfileSection = () => {
                         color="inherit"
                     />
                 }
+               
                 label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
                 variant="outlined"
                 ref={anchorRef}
@@ -159,7 +166,7 @@ const ProfileSection = () => {
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 {/* <Typography variant="h4">Good Morning,</Typography> */}
                                                 <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                    Johne Doe
+                                                {userObject.staffName}
                                                 </Typography>
                                             </Stack>
                                             {/* <Typography variant="subtitle2">Project Admin</Typography> */}
@@ -286,7 +293,7 @@ const ProfileSection = () => {
                                                 <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                     selected={selectedIndex === 4}
-                                                    onClick={handleLogout}
+                                                    onClick={logoutUser}
                                                 >
                                                     <ListItemIcon>
                                                         <IconLogout stroke={1.5} size="1.3rem" />

@@ -1,10 +1,15 @@
+import { CssBaseline, StyledEngineProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline, StyledEngineProvider } from '@mui/material';
-
 // routing
-import Routes from 'routes';
+// import Routes from 'routes';
+import React, { useMemo, useState } from 'react';
+import { useRoutes } from 'react-router-dom';
+import MainRoutes from './routes/MainRoutes';
+import { baseUrl, getUser } from './services/Auth';
+import { getStatistics } from './services/Helpers';
+import { AppContext } from './components/Context/AppContext';
 
 // defaultTheme
 import themes from 'themes';
@@ -12,17 +17,29 @@ import themes from 'themes';
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
 
+
 // ==============================|| APP ||============================== //
 
 const App = () => {
     const customization = useSelector((state) => state.customization);
+    const [user, setUser] = useState(getUser());
+    const routing = useRoutes(MainRoutes);
 
+    const provider = useMemo(
+        () => ({
+            user,
+            setUser,
+            baseUrl,
+            getStatistics
+        }),
+        [user, setUser]
+    );
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={themes(customization)}>
                 <CssBaseline />
                 <NavigationScroll>
-                    <Routes />
+                    <AppContext.Provider value={provider}>{routing}</AppContext.Provider>
                 </NavigationScroll>
             </ThemeProvider>
         </StyledEngineProvider>
@@ -30,3 +47,27 @@ const App = () => {
 };
 
 export default App;
+
+// import { useRoutes } from "react-router-dom"
+// import Themeroutes from "./routes/Router"
+// import { AppContext } from "./components/Context/AppContext"
+// import { getUser, baseUrl } from "./services/Auth"
+// import React, { useState, useMemo } from "react"
+// import { getStatistics } from "./services/Helpers"
+// const App = () => {
+// 	const [user, setUser] = useState(getUser())
+// 	const routing = useRoutes(Themeroutes)
+
+// 	const provider = useMemo(
+// 		() => ({
+// 			user,
+// 			setUser,
+// 			baseUrl,
+// 			getStatistics
+// 		}),
+// 		[user, setUser]
+// 	)
+// 	return <AppContext.Provider value={provider}>{routing}</AppContext.Provider>
+// }
+
+// export default App

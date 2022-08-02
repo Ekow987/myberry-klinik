@@ -3,6 +3,11 @@
 
 // third-party
 @import '~react-perfect-scrollbar/dist/css/styles.css';
+@import "variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-icons/font/bootstrap-icons.scss";
+@import "./layout/sidebar";
+@import "./layout/container";
 
 // ==============================|| LIGHT BOX ||============================== //
 .fullscreen .react-images__blanket {

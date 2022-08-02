@@ -10,8 +10,10 @@ import App from 'App';
 import { store } from 'store';
 
 // style + assets
-import 'assets/scss/style.scss';
-
+import './assets/scss/style.scss';
+// import '';
+// import 'assets/scss/_variables.scss'
+// import './component/bootstrap.min.css';
 // ==============================|| REACT DOM RENDER  ||============================== //
 
 ReactDOM.render(
