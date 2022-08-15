@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label, Row, Col } from 'reactstrap';
 import Modal from 'react-bootstrap/Modal';
-
+// import * as Yup from 'yup';
 import Logo from '../assets/images/logo12.jpg';
 import ForgetPassword from './ForgetPassword';
+// import { Formik } from 'formik';
+import { FormControl } from 'react-bootstrap';
 export default function Login() {
     const navigate = useNavigate();
     const baseUrl = process.env.REACT_APP_SERVER;
@@ -14,6 +16,16 @@ export default function Login() {
     const [passwordField, setPasswordField] = useState(false);
     const [staffId, setStaffId] = useState('');
     const [checkPayload, setCheckPayload] = useState({});
+
+    // const validateSchema = Yup.object({
+    //     username: Yup.string().required,
+    //     password: Yup.string()
+    //         .required('Please Enter your password')
+    //         .matches(
+    //             /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+    //             'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+    //         )
+    // });
 
     const [loginState, setLoginState] = useState({
         username: '',
@@ -182,13 +194,12 @@ export default function Login() {
     };
 
     return (
-        <>
+        <div className="img">
             <Container>
                 <Row>
                     <Col>
-                        <div className="App">
-                            <h2 id="mov">ICT KLINIK</h2>
-                            <img id="none" src={Logo} alt="profile" width="170" height={100}></img>
+                        <div className="App" id="go">
+                            {/* <img id="none" src={Logo} alt="profile" width="170" height={100}></img> */}
                             <Form className="form" onSubmit={handleLogin}>
                                 <FormGroup className="search-wrap">
                                     <Label for="staff-id">Staff Id</Label>
@@ -200,8 +211,20 @@ export default function Login() {
                                         name="username"
                                         placeholder="Enter Staff ID"
                                         required
+                                        // isInvalid={!!errors.username}
                                     />
+                                    {/* <FormControl className="FeedBack" type="invalid">
+                                        {errors.username}
+                                    </FormControl> */}
                                 </FormGroup>
+                                {/* <Formik
+                                    validationSchema={validateSchema}
+                                    onSubmit={console.log}
+                                    initialValues={{
+                                        username: '',
+                                        password: ''
+                                    }}
+                                /> */}
                                 <FormGroup>
                                     <Label for="staff-password">Password</Label>
                                     <Input
@@ -212,7 +235,11 @@ export default function Login() {
                                         name="password"
                                         placeholder="********"
                                         required
+                                        // isInvalid={!!errors.password}
                                     />
+                                    {/* <FormControl className="FeedBack" type="invalid">
+                                        {errors.password}
+                                    </FormControl> */}
                                 </FormGroup>
                                 <Row>
                                     <Col className="d-flex justify-content-center ">
@@ -331,6 +358,6 @@ export default function Login() {
                     </Modal.Body>
                 </Form>
             </Modal>
-        </>
+        </div>
     );
 }

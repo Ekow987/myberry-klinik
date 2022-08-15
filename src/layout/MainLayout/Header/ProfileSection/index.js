@@ -59,9 +59,9 @@ const ProfileSection = () => {
     //     console.log('Logout');
     // };
     const logoutUser = () => {
-		localStorage.clear()
-		navigate("/login")
-	}
+        localStorage.clear();
+        navigate('/login');
+    };
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
@@ -69,7 +69,7 @@ const ProfileSection = () => {
         setOpen(false);
     };
 
-    const userObject = JSON.parse(localStorage.getItem("userObject"))
+    const userObject = JSON.parse(localStorage.getItem('userObject'));
 
     const handleListItemClick = (event, index, route = '') => {
         setSelectedIndex(index);
@@ -93,7 +93,7 @@ const ProfileSection = () => {
     }, [open]);
 
     return (
-        <>
+        <div>
             <Chip
                 sx={{
                     height: '48px',
@@ -114,7 +114,6 @@ const ProfileSection = () => {
                         lineHeight: 0
                     }
                 }}
-                   
                 icon={
                     <Avatar
                         src={User1}
@@ -129,7 +128,6 @@ const ProfileSection = () => {
                         color="inherit"
                     />
                 }
-               
                 label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
                 variant="outlined"
                 ref={anchorRef}
@@ -166,7 +164,7 @@ const ProfileSection = () => {
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 {/* <Typography variant="h4">Good Morning,</Typography> */}
                                                 <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                {userObject.staffName}
+                                                    {userObject.staffName}
                                                 </Typography>
                                             </Stack>
                                             {/* <Typography variant="subtitle2">Project Admin</Typography> */}
@@ -309,7 +307,7 @@ const ProfileSection = () => {
                     </Transitions>
                 )}
             </Popper>
-        </>
+        </div>
     );
 };
 
