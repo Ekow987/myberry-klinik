@@ -1,13 +1,14 @@
 import md5 from 'md5';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container, Form, FormGroup, Input, Label, Row, Col } from 'reactstrap';
+import { Button, Container, FormGroup, Input, Label, Row, Col } from 'reactstrap';
 import Modal from 'react-bootstrap/Modal';
-// import * as Yup from 'yup';
+import signupSchema from './schema';
 import Logo from '../assets/images/logo12.jpg';
 import ForgetPassword from './ForgetPassword';
-// import { Formik } from 'formik';
-import { FormControl } from 'react-bootstrap';
+import { Formik } from 'formik';
+import { Form } from 'react-bootstrap';
+
 export default function Login() {
     const navigate = useNavigate();
     const baseUrl = process.env.REACT_APP_SERVER;
@@ -16,17 +17,6 @@ export default function Login() {
     const [passwordField, setPasswordField] = useState(false);
     const [staffId, setStaffId] = useState('');
     const [checkPayload, setCheckPayload] = useState({});
-
-    // const validateSchema = Yup.object({
-    //     username: Yup.string().required,
-    //     password: Yup.string()
-    //         .required('Please Enter your password')
-    //         .matches(
-    //             /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-    //             'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
-    //         )
-    // });
-
     const [loginState, setLoginState] = useState({
         username: '',
         password: ''
@@ -48,39 +38,10 @@ export default function Login() {
         setLoginState({ ...loginState, [name]: value.trim() });
     };
 
-    const handleSignUpState = (e) => {
-        const { name, value } = e.target;
-        setSignupState({
-            ...signUpState,
-            [name]: value.trim()
-        });
-        // console.log(
-        // 	"%cCurrent Sign Up State: ",
-        // 	"background:purple; color:white; border-radius:20px",
-        // 	signUpState
-        // )
-    };
-
     const handleStaffId = (e) => {
         e.preventDefault();
         setStaffId(e.target.value.trim());
         setPasswordField(false);
-    };
-
-    const handleSignUp = (e) => {
-        e.preventDefault();
-        // console.log(checkPayload)
-        // console.log(
-        // 	"%cSign Up Sate:",
-        // 	"background:purple;color:white",
-        // 	signUpState
-        // )
-        if (signUpState.password === signUpState.confirmPassword && signUpState.code == checkPayload.verification) {
-            registerUser();
-            clearForms();
-            handleClose();
-        } else {
-        }
     };
 
     const clearForms = () => {
@@ -92,10 +53,10 @@ export default function Login() {
 
     const checkStaffId = (e) => {
         e.preventDefault();
-        var myHeaders = new Headers();
+        const myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
 
-        var requestOptions = {
+        const requestOptions = {
             method: 'GET',
             headers: myHeaders,
             redirect: 'follow'
@@ -117,10 +78,10 @@ export default function Login() {
     };
 
     const registerUser = () => {
-        var myHeaders = new Headers();
+        const myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
 
-        var raw = JSON.stringify({
+        const raw = JSON.stringify({
             staffId: checkPayload.staffId,
             staffName: checkPayload.staffName,
             staffStation: checkPayload.staffStation,
@@ -129,7 +90,7 @@ export default function Login() {
             staffPassword: md5(signUpState.password)
         });
 
-        var requestOptions = {
+        const requestOptions = {
             method: 'POST',
             headers: myHeaders,
             redirect: 'follow',
@@ -153,17 +114,32 @@ export default function Login() {
         setCheckPayload({});
     };
 
+    const handleSignUp = (e) => {
+        e.preventDefault();
+
+        if (signUpState.code === checkPayload.verification) {
+            registerUser();
+            clearForms();
+            handleClose();
+
+            return;
+        }
+
+        // eslint-disable-next-line no-alert
+        alert('Check your code and try again');
+    };
+
     const handleLogin = (e) => {
         e.preventDefault();
-        var myHeaders = new Headers();
+        const myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
 
-        var raw = JSON.stringify({
+        const raw = JSON.stringify({
             username: loginState.username,
             password: md5(loginState.password)
         });
 
-        var requestOptions = {
+        const requestOptions = {
             method: 'POST',
             headers: myHeaders,
             body: raw,
@@ -180,7 +156,7 @@ export default function Login() {
                     if (result.code === 404) {
                         return;
                     }
-                    if (result.code != 200) {
+                    if (result.code !== 200) {
                         return;
                     }
 
@@ -264,74 +240,106 @@ export default function Login() {
             </Container>
 
             <Modal show={showSignupModal} onHide={handleClose}>
-                <Form onSubmit={handleSignUp}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>User Registration</Modal.Title>
-                    </Modal.Header>
+                <Formik validationSchema={signupSchema} onSubmit={handleSignUp} initialValues={signUpState}>
+                    {({ handleSubmit, handleChange, touched, values, errors }) => (
+                        <Form onSubmit={handleSubmit}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>User Registration</Modal.Title>
+                            </Modal.Header>
 
-                    <Modal.Body>
-                        <>
-                            {passwordField ? (
+                            <Modal.Body>
                                 <>
-                                    <p>{checkPayload.staffId}</p>
-                                    <p>{checkPayload.staffName}</p>
+                                    {passwordField ? (
+                                        <>
+                                            <p>{checkPayload.staffId}</p>
+                                            <p>{checkPayload.staffName}</p>
+                                        </>
+                                    ) : null}
                                 </>
-                            ) : null}
-                        </>
 
-                        <div className="mb-3 form-group">
-                            <label>Staff Id</label>
-                            <Input type="number" placeholder="Staff id" autoFocus value={staffId} onChange={handleStaffId} required />
-                        </div>
-                        {passwordField ? null : (
-                            <>
-                                <Button className="btn btn-sm btn-primary" onClick={checkStaffId}>
-                                    Check
-                                </Button>
-                            </>
-                        )}
-
-                        {passwordField ? (
-                            <>
                                 <div className="mb-3 form-group">
-                                    <label>Set New Password</label>
+                                    <label>Staff Id</label>
                                     <Input
-                                        type="password"
-                                        placeholder="Enter password"
-                                        name="password"
-                                        onChange={handleSignUpState}
+                                        type="number"
+                                        placeholder="Staff id"
+                                        autoFocus
+                                        value={staffId}
+                                        onChange={handleStaffId}
                                         required
                                     />
                                 </div>
-                                <div className="mb-3 form-group">
-                                    <label>Confirm New Password</label>
-                                    <Input
-                                        type="password"
-                                        placeholder="Confirm Password"
-                                        name="confirmPassword"
-                                        onChange={handleSignUpState}
-                                        required
-                                    />
-                                </div>
+                                {passwordField ? null : (
+                                    <>
+                                        <Button className="btn btn-sm btn-primary" onClick={checkStaffId}>
+                                            Check
+                                        </Button>
+                                    </>
+                                )}
 
-                                <div className="mb-3 form-group">
-                                    <label>Enter Verification Code</label>
-                                    <Input type="number" name="code" placeholder="Enter code" onChange={handleSignUpState} required />
-                                </div>
-                            </>
-                        ) : null}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        {passwordField ? (
-                            <>
-                                {' '}
-                                <Button className="btn-sm btn-prinary" type="submit">
-                                    Register
-                                </Button>
-                            </>
-                        ) : null}
-                    </Modal.Footer>
-                </Form>
+                                {passwordField ? (
+                                    <>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Set New Password</Form.Label>
+                                            <Form.Control
+                                                type="password"
+                                                placeholder="Enter password"
+                                                name="password"
+                                                isValid={touched.password && !errors.password}
+                                                isInvalid={errors.password}
+                                                vale={values.password}
+                                                onChange={handleChange}
+                                            />
+                                            <Form.Control.Feedback type={errors.password ? 'invalid' : 'valid'}>
+                                                {errors.password}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Confirm New Password</Form.Label>
+                                            <Form.Control
+                                                type="password"
+                                                placeholder="Confirm Password"
+                                                name="confirmPassword"
+                                                isValid={touched.confirmPassword && !errors.confirmPassword}
+                                                isInvalid={errors.confirmPassword}
+                                                value={values.confirmPassword}
+                                                onChange={handleChange}
+                                            />
+                                            <Form.Control.Feedback type={errors.confirmPassword ? 'invalid' : 'valid'}>
+                                                {errors.confirmPassword}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Enter Verification Code</Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                name="code"
+                                                placeholder="Enter code"
+                                                isValid={touched.code && !errors.code}
+                                                isInvalid={errors.code}
+                                                value={values.code}
+                                                onChange={handleChange}
+                                            />
+                                            <Form.Control.Feedback type={errors.code ? 'invalid' : 'valid'}>
+                                                {errors.code}
+                                            </Form.Control.Feedback>
+                                        </Form.Group>
+                                    </>
+                                ) : null}
+                            </Modal.Body>
+                            <Modal.Footer>
+                                {passwordField ? (
+                                    <>
+                                        {' '}
+                                        <Button className="btn-sm btn-prinary" type="submit">
+                                            Register
+                                        </Button>
+                                    </>
+                                ) : null}
+                            </Modal.Footer>
+                        </Form>
+                    )}
+                </Formik>
             </Modal>
             <Modal show={showPasswordModal} onHide={handlePasswordMocalClose}>
                 <Form onSubmit={handleForgotPassword}>
