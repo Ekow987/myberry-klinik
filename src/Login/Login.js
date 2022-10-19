@@ -13,6 +13,7 @@ export default function Login() {
     const navigate = useNavigate();
     const baseUrl = process.env.REACT_APP_SERVER;
     const [showSignupModal, setShowSignupModal] = useState(false);
+    const [showForgetPwdModal, setshowForgetPwdModal] = useState(false);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [passwordField, setPasswordField] = useState(false);
     const [staffId, setStaffId] = useState('');
@@ -28,6 +29,10 @@ export default function Login() {
     });
     const handleClose = () => setShowSignupModal(false);
     const handleShow = () => setShowSignupModal(true);
+    const handlePwdShow = () => setshowForgetPwdModal(true);
+    const handlePwdClose = () => setshowForgetPwdModal(false);
+
+
     const handlePasswordMocalClose = () => setShowSignupModal(false);
     const handlePasswordMocalShow = () => setShowSignupModal(true);
 
@@ -230,8 +235,11 @@ export default function Login() {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <small className="d-flex justify-content-center ">Forgot password?</small>
-                                    {/* <ForgetPassword /> */}
+                                <Col className="d-flex justify-content-center ">
+                                        <Button className="btn-sm btn-warning d-flex justify-content-center" onClick={handlePwdShow}>
+                                            ForgetPassword?
+                                        </Button>
+                                    </Col>
                                 </Row>
                             </Form>
                         </div>
@@ -341,7 +349,7 @@ export default function Login() {
                     )}
                 </Formik>
             </Modal>
-            <Modal show={showPasswordModal} onHide={handlePasswordMocalClose}>
+            <Modal show={showForgetPwdModal} onHide={handlePwdClose}>
                 <Form onSubmit={handleForgotPassword}>
                     <Modal.Header closeButton>
                         <Modal.Title>Reset Password</Modal.Title>
@@ -360,9 +368,13 @@ export default function Login() {
                                 required
                             />
                         </div>
-                        <Button className="btn btn-sm btn-primary" type="submit">
-                            Reset Password
-                        </Button>
+                        {passwordField ? null : (
+                                    <>
+                                        <Button className="btn btn-sm btn-primary" onClick={checkStaffId}>
+                                            Check
+                                        </Button>
+                                    </>
+                                )}
                     </Modal.Body>
                 </Form>
             </Modal>

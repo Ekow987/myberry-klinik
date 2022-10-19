@@ -18,6 +18,14 @@ const dashboard = {
             url: '/dashboard/default',
             icon: icons.IconDashboard,
             breadcrumbs: false
+        },
+        {
+            id: 'default',
+            title: 'Report',
+            type: 'item',
+            url: '/report',
+            icon: icons.IconDashboard,
+            breadcrumbs: false
         }
     ]
 };

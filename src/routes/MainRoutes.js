@@ -7,13 +7,13 @@ import Login from '../Login/Login';
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 const Issues = Loadable(lazy(() => import('views/pages/Issues/Issues')));
+const Report = Loadable(lazy(() => import('views/pages/Issues/report')));
 
-// utilities routing
-const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
-// const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
-const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
-const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
-const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
+
+// // const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
+// const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
+// const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
+// const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
@@ -34,29 +34,29 @@ const MainRoutes = [
                 element: <Issues />
             },
             {
-                path: '/utils/util-typography',
-                element: <UtilsTypography />
+                path: '/report',
+                element: <Report />
             },
+            // // {
+            // //     path: '/utils/util-color',
+            // //     element: <UtilsColor />
+            // // },
             // {
-            //     path: '/utils/util-color',
-            //     element: <UtilsColor />
+            //     path: '/utils/util-shadow',
+            //     element: <UtilsShadow />
             // },
-            {
-                path: '/utils/util-shadow',
-                element: <UtilsShadow />
-            },
-            {
-                path: '/icons/tabler-icons',
-                element: <UtilsTablerIcons />
-            },
-            {
-                path: '/icons/material-icons',
-                element: <UtilsMaterialIcons />
-            },
-            {
-                path: '/sample-page',
-                element: <SamplePage />
-            }
+            // {
+            //     path: '/icons/tabler-icons',
+            //     element: <UtilsTablerIcons />
+            // },
+            // {
+            //     path: '/icons/material-icons',
+            //     element: <UtilsMaterialIcons />
+            // },
+            // {
+            //     path: '/sample-page',
+            //     element: <SamplePage />
+            // }
         ]
     },
     {
