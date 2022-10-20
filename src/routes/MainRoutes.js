@@ -22,7 +22,7 @@ const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
 const MainRoutes = [
     {
-        path: '/app',
+        path: '/',
         element: <MainLayout />,
         children: [
             {
@@ -60,7 +60,7 @@ const MainRoutes = [
         ]
     },
     {
-        path: '/',
+        path: '/login',
         exact: true,
         element: <Login />
     }
