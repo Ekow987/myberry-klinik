@@ -8,6 +8,7 @@ import Login from '../Login/Login';
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 const Issues = Loadable(lazy(() => import('views/pages/Issues/Issues')));
 const Report = Loadable(lazy(() => import('views/pages/Issues/report')));
+const ReportPage = Loadable(lazy(() => import('views/pages/Issues/ReportPage')));
 
 
 // // const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
@@ -22,13 +23,9 @@ const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
 const MainRoutes = [
     {
-        path: '/',
+        path: '/app',
         element: <MainLayout />,
         children: [
-            {
-                path: '/',
-                element: <Issues />
-            },
             {
                 path: '/dashboard/default',
                 element: <Issues />
@@ -37,64 +34,19 @@ const MainRoutes = [
                 path: '/report',
                 element: <Report />
             },
-            // // {
-            // //     path: '/utils/util-color',
-            // //     element: <UtilsColor />
-            // // },
-            // {
-            //     path: '/utils/util-shadow',
-            //     element: <UtilsShadow />
-            // },
-            // {
-            //     path: '/icons/tabler-icons',
-            //     element: <UtilsTablerIcons />
-            // },
-            // {
-            //     path: '/icons/material-icons',
-            //     element: <UtilsMaterialIcons />
-            // },
-            // {
-            //     path: '/sample-page',
-            //     element: <SamplePage />
-            // }
+            {
+                path: '/reportpage',
+                element: <ReportPage/>
+            },
+            
+            
         ]
     },
     {
-        path: '/login',
+        path: '/',
         exact: true,
         element: <Login />
     }
 ];
 
 export default MainRoutes;
-
-// const ThemeRoutes = [
-// 	{
-// 		path: "/",
-// 		element: <FullLayout />,
-// 		children: [
-// 			{
-// 				path: "/issues",
-// 				exact: true,
-// 				element: <Issues />
-// 			},
-// 			{
-// 				path: "/devices",
-// 				exact: true,
-// 				element: <Devices />
-// 			},
-// 			{
-// 				path: "/training",
-// 				exact: true,
-// 				element: <Trainings />
-// 			},
-
-// 			{ path: "/reports", exact: true, element: <Reports /> }
-// 		]
-// 	},
-// 	{
-// 		path: "/login",
-// 		exact: true,
-// 		element: <Login />
-// 	}
-// ]

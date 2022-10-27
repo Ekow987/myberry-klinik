@@ -15,7 +15,7 @@ const dashboard = {
             id: 'default',
             title: 'Issues',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/app/dashboard/default',
             icon: icons.IconDashboard,
             breadcrumbs: false
         },
@@ -23,7 +23,7 @@ const dashboard = {
             id: 'default',
             title: 'Report',
             type: 'item',
-            url: '/report',
+            url: '/app/report',
             icon: icons.IconDashboard,
             breadcrumbs: false
         }

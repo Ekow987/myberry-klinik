@@ -6,11 +6,13 @@ import Modal from 'react-bootstrap/Modal';
 import signupSchema from './schema';
 import Logo from '../assets/images/logo12.jpg';
 import ForgetPassword from './ForgetPassword';
-import { Formik } from 'formik';
+import { Formik, useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
+import swal from 'sweetalert';
 
 export default function Login() {
     const navigate = useNavigate();
+    // const signUpForm = useFormik()
     const baseUrl = process.env.REACT_APP_SERVER;
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [showForgetPwdModal, setshowForgetPwdModal] = useState(false);
@@ -23,7 +25,7 @@ export default function Login() {
         password: ''
     });
     const [signUpState, setSignupState] = useState({
-        password: '',
+        password: 'q',
         confirmPassword: '',
         code: ''
     });
@@ -31,8 +33,6 @@ export default function Login() {
     const handleShow = () => setShowSignupModal(true);
     const handlePwdShow = () => setshowForgetPwdModal(true);
     const handlePwdClose = () => setshowForgetPwdModal(false);
-
-
     const handlePasswordMocalClose = () => setShowSignupModal(false);
     const handlePasswordMocalShow = () => setShowSignupModal(true);
 
@@ -74,6 +74,10 @@ export default function Login() {
                     if (result.status === 200) {
                         setPasswordField(true);
                         setCheckPayload(result.data);
+                        swal({
+                                text: "You will recieve an OTP code to complete your process",
+                                icon: "success"
+                              })
                     }
                 })
                 .catch((error) => console.log('error', error));
@@ -82,7 +86,7 @@ export default function Login() {
         }
     };
 
-    const registerUser = () => {
+    const registerUser = (code) => {
         const myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
 
@@ -92,7 +96,7 @@ export default function Login() {
             staffStation: checkPayload.staffStation,
             staffDepartment: checkPayload.staffDepartment,
             staffUnit: checkPayload.staffUnit,
-            staffPassword: md5(signUpState.password)
+            staffPassword: md5(code)
         });
 
         const requestOptions = {
@@ -110,6 +114,10 @@ export default function Login() {
                      *further processes may come in
                      */
                     if (result.code === 200) {
+                        swal({
+                                 text: "Registration Successful",
+                                icon: "success"
+                              })
                     }
                 })
                 .catch((error) => console.log('error', error));
@@ -119,11 +127,15 @@ export default function Login() {
         setCheckPayload({});
     };
 
-    const handleSignUp = (e) => {
-        e.preventDefault();
+    const handleSignUpState = (e) => {
+        const { name, value } = e.target;
+        setSignupState({ ...signUpState, [name]: value.trim() });
+        console.log('hi');
+    };
 
-        if (signUpState.code === checkPayload.verification) {
-            registerUser();
+    const handleSignUp = (formData) => {
+        if (formData.code === checkPayload.verification) {
+            registerUser(formData.password);
             clearForms();
             handleClose();
 
@@ -165,10 +177,10 @@ export default function Login() {
                         return;
                     }
 
-                    localStorage.setItem('userObject', JSON.stringify(result.data));
-                    navigate('/dashboard/default');
+                    localStorage.setItem('userObject', JSON.stringify(result?.data));
+                    navigate('app/dashboard/default');
                 });
-            console.log(localStorage).catch((error) => console.log('error', error));
+            // console.log(localStorage).catch((error) => console.log('error', error));
         } catch (error) {
             console.log('error', error);
         }
@@ -183,7 +195,9 @@ export default function Login() {
                             {/* <img id="none" src={Logo} alt="profile" width="170" height={100}></img> */}
                             <Form className="form" onSubmit={handleLogin}>
                                 <FormGroup className="search-wrap">
-                                    <Label for="staff-id">Staff Id</Label>
+                                    <Label for="staff-id" className="text">
+                                        Staff Id
+                                    </Label>
                                     <Input
                                         id="staff-id"
                                         value={loginState.username}
@@ -207,7 +221,9 @@ export default function Login() {
                                     }}
                                 /> */}
                                 <FormGroup>
-                                    <Label for="staff-password">Password</Label>
+                                    <Label for="staff-password" className="text">
+                                        Password
+                                    </Label>
                                     <Input
                                         id="staff-password"
                                         type="password"
@@ -235,7 +251,7 @@ export default function Login() {
                                     </Col>
                                 </Row>
                                 <Row>
-                                <Col className="d-flex justify-content-center ">
+                                    <Col className="d-flex justify-content-center ">
                                         <Button className="btn-sm btn-warning d-flex justify-content-center" onClick={handlePwdShow}>
                                             ForgetPassword?
                                         </Button>
@@ -248,7 +264,7 @@ export default function Login() {
             </Container>
 
             <Modal show={showSignupModal} onHide={handleClose}>
-                <Formik validationSchema={signupSchema} onSubmit={handleSignUp} initialValues={signUpState}>
+                <Formik validationSchema={signupSchema} onSubmit={handleSignUp} onChange={handleSignUpState} initialValues={signUpState}>
                     {({ handleSubmit, handleChange, touched, values, errors }) => (
                         <Form onSubmit={handleSubmit}>
                             <Modal.Header closeButton>
@@ -294,7 +310,7 @@ export default function Login() {
                                                 name="password"
                                                 isValid={touched.password && !errors.password}
                                                 isInvalid={errors.password}
-                                                vale={values.password}
+                                                value={values.password}
                                                 onChange={handleChange}
                                             />
                                             <Form.Control.Feedback type={errors.password ? 'invalid' : 'valid'}>
@@ -369,12 +385,12 @@ export default function Login() {
                             />
                         </div>
                         {passwordField ? null : (
-                                    <>
-                                        <Button className="btn btn-sm btn-primary" onClick={checkStaffId}>
-                                            Check
-                                        </Button>
-                                    </>
-                                )}
+                            <>
+                                <Button className="btn btn-sm btn-primary" onClick={checkStaffId}>
+                                    Check
+                                </Button>
+                            </>
+                        )}
                     </Modal.Body>
                 </Form>
             </Modal>

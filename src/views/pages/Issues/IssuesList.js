@@ -208,6 +208,7 @@ export default function IssuesList({ officers }) {
                 url: `${baseUrl}/api/v1/issues/feedback`,
                 data: dataToUpload
             });
+            
             if (result.data.code == 200) {
                 getData();
                 setTimeout(() => {
@@ -434,7 +435,7 @@ export default function IssuesList({ officers }) {
                 } else {
                 }
             }
-        }    
+        }
     ];
 
     // const managerColumns = [
@@ -644,9 +645,9 @@ export default function IssuesList({ officers }) {
                 if (params.row.status.toString() == 1) {
                     return (
                         <Button className="btn btn-sm btn-primary" data-id={params.row.id} onClick={handleRating}>
-                        Rate
-                        {/* <i className="bi bi-chat-dots"></i>{' '} */}
-                    </Button>
+                            Rate
+                            {/* <i className="bi bi-chat-dots"></i>{' '} */}
+                        </Button>
                     );
                 } else {
                     return null;
@@ -700,9 +701,11 @@ export default function IssuesList({ officers }) {
         <>
             <Row className="mb-3">
                 <Col className="col">
-                {userObject?.type == 'user' ?  <Button className="btn btn-primary mr-5 mt-2" onClick={handleShow}>
-                        New Issues
-                    </Button> :null}                    
+                    {userObject?.type == 'user' ? (
+                        <Button className="btn btn-primary mr-5 mt-2" onClick={handleShow}>
+                            New Issues
+                        </Button>
+                    ) : null}
                     {/* <Button
 							className="btn btn-danger mr-2 mt-2"
 							title="Coming Soon"

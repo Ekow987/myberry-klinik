@@ -60,7 +60,7 @@ const ProfileSection = () => {
     // };
     const logoutUser = () => {
         localStorage.clear();
-        navigate('/login');
+        navigate('/');
     };
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
