@@ -75,9 +75,9 @@ export default function ReportList() {
                 
                 <Row>
                         <Col className="d-flex justify-content-center ">
-                        <a href="/app/reportpage"> <Button className="btn-sm btn-warning d-flex justify-content-center" id="toast">
+                      <Button className="btn-sm btn-warning d-flex justify-content-center" id="toast">
                           Print 
-                        </Button></a>
+                        </Button>
                        
                         </Col>
                     </Row>

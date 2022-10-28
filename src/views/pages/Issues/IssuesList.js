@@ -438,6 +438,137 @@ export default function IssuesList({ officers }) {
         }
     ];
 
+    const directorColumns = [
+        { field: 'id', headerName: '#', width: 5 },
+        {
+            headerName: 'Created At',
+            field: 'createdAt',
+            width: 100,
+            valueGetter: (params) => `${formatDate(params.row.createdAt)}`
+        },
+
+        { field: 'issue_description', headerName: 'Description', width: 220 },
+        { field: 'issuer', headerName: 'Issuer', width: 150 },
+        { field: 'issue_name', headerName: 'Issue Type', width: 130 },
+        {
+            field: 'assign_by',
+            headerName: 'Assign By',
+            valueGetter: (params) => (params.row.assign_by == userObject.staffId ? `You` : '')
+        },
+        {
+            field: 'surname',
+            headerName: 'Assigned To',
+            width: 200,
+            valueGetter: (params) => params.row.firstname + ' ' + params.row.surname
+        },
+        {
+            field: 'feedback_rating',
+            headerName: 'Rating',
+            width: 140,
+            renderCell: (params) => {
+                switch (params.row.status.toString()) {
+                    case '1':
+                        if (params.row.feedback_rating) {
+                            return (
+                                <div className="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                    <button type="button" className="btn btn-primary">
+                                        {params.row.feedback_rating}
+                                    </button>
+                                </div>
+                            );
+                        }
+                }
+            }
+        },
+        {
+            field: 'status',
+            headerName: 'Status',
+            width: 140,
+            renderCell: (params) => {
+                switch (params.row.status.toString()) {
+                    case '3':
+                        return (
+                            <span className="btn btn-sm btn-danger">
+                                <div>Pending</div>
+                            </span>
+                        );
+                        break;
+
+                    case '2':
+                        return (
+                            <span className="btn btn-sm btn-warning">
+                                <div> Assigned </div>
+                            </span>
+                        );
+                        break;
+                    case '1':
+                        return (
+                            <button type="button" className="btn btn-sm btn-success">
+                                Resolved
+                            </button>
+                        );
+                        // if (params.row.feedback_rating) {
+                        // 	return (
+                        // 		<div
+                        // 			className="btn-group"
+                        // 			role="group"
+                        // 			aria-label="Button group with nested dropdown"
+                        // 		>
+                        // 			<button
+                        // 				type="button"
+                        // 				className="btn btn-primary"
+                        // 			>
+                        // 				{params.row.feedback_rating}
+                        // 			</button>
+
+                        // 		</div>
+                        // 	)
+                        // } else {
+                        // 	return (
+                        // 		<button
+                        // 			type="button"
+                        // 			className="btn btn-sm btn-success"
+                        // 		>
+                        // 			Resolved
+                        // 		</button>
+                        // 	)
+                        // }
+
+                        break;
+                }
+            }
+        },
+        {
+            headerName: 'Action',
+            sortable: false,
+            width: 160,
+            renderCell: (params) => {
+                if (params.row.status != 1) {
+                    return (
+                        <>
+                            <Button data-id={params.row.issue_id} data-row={JSON.stringify(params.row)} onClick={fetchDetails}>
+                                Details
+                            </Button>
+
+                            <Button
+                                variant="success"
+                                data-unitid={params.row.unit_id}
+                                data-unitname={params.row.unit_name}
+                                data-issueid={params.row.issue_id}
+                                onClick={handleAssign}
+                            >
+                                {params.row.status == 2 ? `Re-assign` : `Assign`}
+                            </Button>
+                        </>
+                    );
+                } else {
+                }
+            }
+        }
+    ];
+
+
+
     // const managerColumns = [
     //     { field: 'description', headerName: 'Description' },
     //     { field: 'issuer', headerName: 'Issuer', width: 130 },
@@ -481,54 +612,54 @@ export default function IssuesList({ officers }) {
     //     }
     // ];
 
-    const directorColumns = [
-        { field: 'description', headerName: 'Description' },
-        { field: 'issuer', headerName: 'Issuer', width: 130 },
-        { field: 'createdAt', headerName: 'Created At' },
-        { field: 'type', headerName: 'Issue Type' },
-        { field: 'assignedBy', headerName: 'Assign By' },
-        { field: 'assignedAt', headerName: 'Assigned At' },
-        { field: 'taskDescription', headerName: 'Task Description' },
-        { field: 'assignedTo', headerName: 'Assigned To' },
-        { field: 'adminComment', headerName: 'Admin Remarks' },
-        {
-            headerName: 'Status',
-            sortable: false,
-            width: 100,
-            renderCell: (params) => {
-                switch (params.row.status.toString()) {
-                    case 'Unresolved':
-                        return (
-                            <span className="btn btn-sm btn-danger">
-                                <div>Pending</div>
-                            </span>
-                        );
-                        break;
-                    case 'Resolved':
-                        return (
-                            <span className="btn btn-sm btn-success">
-                                <div> Resolved</div>
-                            </span>
-                        );
-                        break;
-                }
-            }
-        },
-        {
-            headerName: 'Action',
-            sortable: false,
-            width: 300,
-            renderCell: () => (
-                <>
-                    <span style={{ display: 'flex' }}>
-                        <div></div>
-                        <div></div>
-                        <i className="bi bi-trash-fill"></i>
-                    </span>
-                </>
-            )
-        }
-    ];
+    // const directorColumns = [
+    //     { field: 'description', headerName: 'Description' },
+    //     { field: 'issuer', headerName: 'Issuer', width: 130 },
+    //     { field: 'createdAt', headerName: 'Created At' },
+    //     { field: 'type', headerName: 'Issue Type' },
+    //     { field: 'assignedBy', headerName: 'Assign By' },
+    //     { field: 'assignedAt', headerName: 'Assigned At' },
+    //     { field: 'taskDescription', headerName: 'Task Description' },
+    //     { field: 'assignedTo', headerName: 'Assigned To' },
+    //     { field: 'adminComment', headerName: 'Admin Remarks' },
+    //     {
+    //         headerName: 'Status',
+    //         sortable: false,
+    //         width: 100,
+    //         renderCell: (params) => {
+    //             switch (params.row.status.toString()) {
+    //                 case 'Unresolved':
+    //                     return (
+    //                         <span className="btn btn-sm btn-danger">
+    //                             <div>Pending</div>
+    //                         </span>
+    //                     );
+    //                     break;
+    //                 case 'Resolved':
+    //                     return (
+    //                         <span className="btn btn-sm btn-success">
+    //                             <div> Resolved</div>
+    //                         </span>
+    //                     );
+    //                     break;
+    //             }
+    //         }
+    //     },
+    //     {
+    //         headerName: 'Action',
+    //         sortable: false,
+    //         width: 300,
+    //         renderCell: () => (
+    //             <>
+    //                 <span style={{ display: 'flex' }}>
+    //                     <div></div>
+    //                     <div></div>
+    //                     <i className="bi bi-trash-fill"></i>
+    //                 </span>
+    //             </>
+    //         )
+    //     }
+    // ];
 
     const officerColumns = [
         { field: 'id', headerName: '#', width: 10 },
