@@ -17,7 +17,7 @@ const Issues = () => {
 
     return (
         <>
-            {userObject.type == 'user' ? '' : <IssuesStatistics />}
+            {userObject?.type == 'user' ? '' : <IssuesStatistics />}
             {/* <IssuesStatistics />  */}
             <Container>
                 <Row>

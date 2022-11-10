@@ -168,9 +168,49 @@ table th {
     margin-top:65px;
 }
 .report{
-    padding: 300px;
-    margin-top: -260px;
+    padding: 100px;
+    margin-top: -30px;
+    width: 300%;
+    margin-left: -65px;
 }
 .list{
     margin-top: -260px;
 }
+.editModal{
+    margin-top:80px;
+   border: #d3d3d3;
+   border-width: 100px;
+    
+}
+.edittor{
+    border-style: solid;
+    border-color: green;
+}
+.ceneter{
+    text-align: center;
+    font-weight: bold;
+}
+.text{
+    color: aliceblue;
+}
+.csv{
+    font-size: 20px;
+    text-align: center;
+}
+#btn-btn{
+    width: 20%;
+    margin-top: 30px;
+}
+#toast{
+    margin-top: 50px;
+    width: 150%;
+}
+#reportDesigner1{
+margin-top: 100px;
+padding: 170px;
+margin-left: 120px;
+}
+.list{
+   margin-top: -10px;
+}
+

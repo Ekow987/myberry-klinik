@@ -60,7 +60,7 @@ const ProfileSection = () => {
     // };
     const logoutUser = () => {
         localStorage.clear();
-        navigate('/login');
+        navigate('/');
     };
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -164,7 +164,7 @@ const ProfileSection = () => {
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 {/* <Typography variant="h4">Good Morning,</Typography> */}
                                                 <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                    {userObject.staffName}
+                                                    {userObject?.staffName}
                                                 </Typography>
                                             </Stack>
                                             {/* <Typography variant="subtitle2">Project Admin</Typography> */}

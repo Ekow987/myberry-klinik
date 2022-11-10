@@ -25,7 +25,7 @@ const headers = (isNotFormData = false) => {
 async function handleErrors(response) {
 	if (response.status === 401) {
 		logout(() => {
-			navigate("/login")
+			navigate("/")
 		})
 		return Promise.reject("Please login")
 	}

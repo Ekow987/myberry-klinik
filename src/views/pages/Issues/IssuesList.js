@@ -17,9 +17,11 @@ export default function IssuesList({ officers }) {
     const userObject = JSON.parse(localStorage.getItem('userObject'));
     const [data, setData] = useState([]);
     const [columns, setColumns] = useState([]);
+    const [details, setDetails] = useState({});
     const [officersList, setofficersList] = useState([]);
     const [officersInUnit, setOfficersInUnit] = useState([]);
     const [issueTypes, setIssueTypes] = useState();
+    const [showDetails, setShowDetails] = useState(false);
     const [show, setShow] = useState(false);
     const [showRate, setShowRate] = useState(false);
     const [showAssign, setShowAssign] = useState(false);
@@ -34,7 +36,7 @@ export default function IssuesList({ officers }) {
         officerId: '',
         unitId: '',
         unitName: '',
-        assignedBy: userObject.id,
+        assignedBy: userObject?.id,
         remarks: '',
         diagnose: '',
         resolution: ''
@@ -49,7 +51,10 @@ export default function IssuesList({ officers }) {
     const handleRateShow = () => setShowRate(true);
 
     const handleAssignClose = () => setShowAssign(false);
+
     const handleAssignShow = () => setShowAssign(true);
+    const handleDetailsClose = () => setShowDetails(false);
+    const handleDetailsShow = () => setShowDetails(true);
 
     const handleResolveClose = () => setShowResolve(false);
     const handleResolveShow = () => setShowResolve(true);
@@ -70,6 +75,18 @@ export default function IssuesList({ officers }) {
             type: '',
             description: ''
         });
+    };
+    const fetchDetails = (e) => {
+        e.preventDefault();
+
+        const { row } = e.target.dataset.row;
+        // console.log(row);
+        // console.log(e.target.dataset.row);
+
+        setDetails(JSON.parse(e.target.dataset.row));
+        // console.log(details);
+
+        handleDetailsShow();
     };
 
     const getuserByUnit = async (unit) => {
@@ -191,6 +208,7 @@ export default function IssuesList({ officers }) {
                 url: `${baseUrl}/api/v1/issues/feedback`,
                 data: dataToUpload
             });
+            
             if (result.data.code == 200) {
                 getData();
                 setTimeout(() => {
@@ -394,25 +412,162 @@ export default function IssuesList({ officers }) {
         {
             headerName: 'Action',
             sortable: false,
-            width: 100,
+            width: 160,
             renderCell: (params) => {
                 if (params.row.status != 1) {
                     return (
-                        <Button
-                            variant="success"
-                            data-unitid={params.row.unit_id}
-                            data-unitname={params.row.unit_name}
-                            data-issueid={params.row.issue_id}
-                            onClick={handleAssign}
-                        >
-                            {params.row.status == 2 ? `Re-assign` : `Assign`}
-                        </Button>
+                        <>
+                            <Button data-id={params.row.issue_id} data-row={JSON.stringify(params.row)} onClick={fetchDetails}>
+                                Details
+                            </Button>
+
+                            <Button
+                                variant="success"
+                                data-unitid={params.row.unit_id}
+                                data-unitname={params.row.unit_name}
+                                data-issueid={params.row.issue_id}
+                                onClick={handleAssign}
+                            >
+                                {params.row.status == 2 ? `Re-assign` : `Assign`}
+                            </Button>
+                        </>
                     );
                 } else {
                 }
             }
         }
     ];
+
+    const directorColumns = [
+        { field: 'id', headerName: '#', width: 5 },
+        {
+            headerName: 'Created At',
+            field: 'createdAt',
+            width: 100,
+            valueGetter: (params) => `${formatDate(params.row.createdAt)}`
+        },
+
+        { field: 'issue_description', headerName: 'Description', width: 220 },
+        { field: 'issuer', headerName: 'Issuer', width: 150 },
+        { field: 'issue_name', headerName: 'Issue Type', width: 130 },
+        {
+            field: 'assign_by',
+            headerName: 'Assign By',
+            valueGetter: (params) => (params.row.assign_by == userObject.staffId ? `You` : '')
+        },
+        {
+            field: 'surname',
+            headerName: 'Assigned To',
+            width: 200,
+            valueGetter: (params) => params.row.firstname + ' ' + params.row.surname
+        },
+        {
+            field: 'feedback_rating',
+            headerName: 'Rating',
+            width: 140,
+            renderCell: (params) => {
+                switch (params.row.status.toString()) {
+                    case '1':
+                        if (params.row.feedback_rating) {
+                            return (
+                                <div className="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                    <button type="button" className="btn btn-primary">
+                                        {params.row.feedback_rating}
+                                    </button>
+                                </div>
+                            );
+                        }
+                }
+            }
+        },
+        {
+            field: 'status',
+            headerName: 'Status',
+            width: 140,
+            renderCell: (params) => {
+                switch (params.row.status.toString()) {
+                    case '3':
+                        return (
+                            <span className="btn btn-sm btn-danger">
+                                <div>Pending</div>
+                            </span>
+                        );
+                        break;
+
+                    case '2':
+                        return (
+                            <span className="btn btn-sm btn-warning">
+                                <div> Assigned </div>
+                            </span>
+                        );
+                        break;
+                    case '1':
+                        return (
+                            <button type="button" className="btn btn-sm btn-success">
+                                Resolved
+                            </button>
+                        );
+                        // if (params.row.feedback_rating) {
+                        // 	return (
+                        // 		<div
+                        // 			className="btn-group"
+                        // 			role="group"
+                        // 			aria-label="Button group with nested dropdown"
+                        // 		>
+                        // 			<button
+                        // 				type="button"
+                        // 				className="btn btn-primary"
+                        // 			>
+                        // 				{params.row.feedback_rating}
+                        // 			</button>
+
+                        // 		</div>
+                        // 	)
+                        // } else {
+                        // 	return (
+                        // 		<button
+                        // 			type="button"
+                        // 			className="btn btn-sm btn-success"
+                        // 		>
+                        // 			Resolved
+                        // 		</button>
+                        // 	)
+                        // }
+
+                        break;
+                }
+            }
+        },
+        {
+            headerName: 'Action',
+            sortable: false,
+            width: 160,
+            renderCell: (params) => {
+                if (params.row.status != 1) {
+                    return (
+                        <>
+                            <Button data-id={params.row.issue_id} data-row={JSON.stringify(params.row)} onClick={fetchDetails}>
+                                Details
+                            </Button>
+
+                            <Button
+                                variant="success"
+                                data-unitid={params.row.unit_id}
+                                data-unitname={params.row.unit_name}
+                                data-issueid={params.row.issue_id}
+                                onClick={handleAssign}
+                            >
+                                {params.row.status == 2 ? `Re-assign` : `Assign`}
+                            </Button>
+                        </>
+                    );
+                } else {
+                }
+            }
+        }
+    ];
+
+
 
     // const managerColumns = [
     //     { field: 'description', headerName: 'Description' },
@@ -457,54 +612,54 @@ export default function IssuesList({ officers }) {
     //     }
     // ];
 
-    const directorColumns = [
-        { field: 'description', headerName: 'Description' },
-        { field: 'issuer', headerName: 'Issuer', width: 130 },
-        { field: 'createdAt', headerName: 'Created At' },
-        { field: 'type', headerName: 'Issue Type' },
-        { field: 'assignedBy', headerName: 'Assign By' },
-        { field: 'assignedAt', headerName: 'Assigned At' },
-        { field: 'taskDescription', headerName: 'Task Description' },
-        { field: 'assignedTo', headerName: 'Assigned To' },
-        { field: 'adminComment', headerName: 'Admin Remarks' },
-        {
-            headerName: 'Status',
-            sortable: false,
-            width: 100,
-            renderCell: (params) => {
-                switch (params.row.status.toString()) {
-                    case 'Unresolved':
-                        return (
-                            <span className="btn btn-sm btn-danger">
-                                <div>Pending</div>
-                            </span>
-                        );
-                        break;
-                    case 'Resolved':
-                        return (
-                            <span className="btn btn-sm btn-success">
-                                <div> Resolved</div>
-                            </span>
-                        );
-                        break;
-                }
-            }
-        },
-        {
-            headerName: 'Action',
-            sortable: false,
-            width: 300,
-            renderCell: () => (
-                <>
-                    <span style={{ display: 'flex' }}>
-                        <div></div>
-                        <div></div>
-                        <i className="bi bi-trash-fill"></i>
-                    </span>
-                </>
-            )
-        }
-    ];
+    // const directorColumns = [
+    //     { field: 'description', headerName: 'Description' },
+    //     { field: 'issuer', headerName: 'Issuer', width: 130 },
+    //     { field: 'createdAt', headerName: 'Created At' },
+    //     { field: 'type', headerName: 'Issue Type' },
+    //     { field: 'assignedBy', headerName: 'Assign By' },
+    //     { field: 'assignedAt', headerName: 'Assigned At' },
+    //     { field: 'taskDescription', headerName: 'Task Description' },
+    //     { field: 'assignedTo', headerName: 'Assigned To' },
+    //     { field: 'adminComment', headerName: 'Admin Remarks' },
+    //     {
+    //         headerName: 'Status',
+    //         sortable: false,
+    //         width: 100,
+    //         renderCell: (params) => {
+    //             switch (params.row.status.toString()) {
+    //                 case 'Unresolved':
+    //                     return (
+    //                         <span className="btn btn-sm btn-danger">
+    //                             <div>Pending</div>
+    //                         </span>
+    //                     );
+    //                     break;
+    //                 case 'Resolved':
+    //                     return (
+    //                         <span className="btn btn-sm btn-success">
+    //                             <div> Resolved</div>
+    //                         </span>
+    //                     );
+    //                     break;
+    //             }
+    //         }
+    //     },
+    //     {
+    //         headerName: 'Action',
+    //         sortable: false,
+    //         width: 300,
+    //         renderCell: () => (
+    //             <>
+    //                 <span style={{ display: 'flex' }}>
+    //                     <div></div>
+    //                     <div></div>
+    //                     <i className="bi bi-trash-fill"></i>
+    //                 </span>
+    //             </>
+    //         )
+    //     }
+    // ];
 
     const officerColumns = [
         { field: 'id', headerName: '#', width: 10 },
@@ -620,9 +775,10 @@ export default function IssuesList({ officers }) {
             renderCell: (params) => {
                 if (params.row.status.toString() == 1) {
                     return (
-                        <span className="btn btn-sm btn-primary" data-id={params.row.id} onClick={handleRating}>
-                            <i className="bi bi-chat-dots"></i>{' '}
-                        </span>
+                        <Button className="btn btn-sm btn-primary" data-id={params.row.id} onClick={handleRating}>
+                            Rate
+                            {/* <i className="bi bi-chat-dots"></i>{' '} */}
+                        </Button>
                     );
                 } else {
                     return null;
@@ -633,7 +789,7 @@ export default function IssuesList({ officers }) {
 
     const getData = async () => {
         let url;
-        switch (userObject.type) {
+        switch (userObject?.type) {
             case 'user':
                 url = `http://localhost:5000/api/v1/issues/user-issues/${userObject.staffId}`;
                 setColumns(userColumns);
@@ -661,8 +817,8 @@ export default function IssuesList({ officers }) {
                     'Content-Type': 'application/json'
                 }
             });
-            const response = await result.json();
-            response.data ? setData(response.data) : setData([]);
+            const response = await result?.json();
+            response?.data ? setData(response.data) : setData([]);
         } catch (error) {
             console.log(error);
         }
@@ -676,9 +832,11 @@ export default function IssuesList({ officers }) {
         <>
             <Row className="mb-3">
                 <Col className="col">
-                    <Button className="btn btn-primary mr-5 mt-2" onClick={handleShow}>
-                        New Issues
-                    </Button>{' '}
+                    {userObject?.type == 'user' ? (
+                        <Button className="btn btn-primary mr-5 mt-2" onClick={handleShow}>
+                            New Issues
+                        </Button>
+                    ) : null}
                     {/* <Button
 							className="btn btn-danger mr-2 mt-2"
 							title="Coming Soon"
@@ -829,7 +987,18 @@ export default function IssuesList({ officers }) {
                     </Modal.Footer>{' '}
                 </Form>
             </Modal>
-
+            <Modal show={showDetails} onHide={handleDetailsClose} className="editModal">
+                <div className="edittor">
+                    <p className="ceneter">Details of reported issues</p>
+                    Description: {details?.issue_description}
+                    <br />
+                    Issuer: {details?.issuer}
+                    <br />
+                    Issue Name: {details?.issue_name}
+                    <br />
+                    Officer Unit: {details?.unit_name}
+                </div>
+            </Modal>
             <Modal show={showResolve} onHide={handleResolveClose} className="header">
                 <Form onSubmit={resolveIssue}>
                     <Modal.Header closeButton className="bg-success text-white">
