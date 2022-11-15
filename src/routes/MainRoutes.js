@@ -8,7 +8,7 @@ import Login from '../Login/Login';
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 const Issues = Loadable(lazy(() => import('views/pages/Issues/Issues')));
 const Report = Loadable(lazy(() => import('views/pages/Issues/report')));
-// const ReportPage = Loadable(lazy(() => import('views/pages/Issues/reportPage')));
+const ReportPage = Loadable(lazy(() => import('views/pages/Issues/ReportPage')));
 
 
 // // const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
@@ -34,10 +34,10 @@ const MainRoutes = [
                 path: '/report',
                 element: <Report />
             },
-            // {
-            //     path: '/reportpage',
-            //     element: <ReportPage/>
-            // },
+            {
+                path: '/reportpage',
+                element: <ReportPage/>
+            },
             
             
         ]

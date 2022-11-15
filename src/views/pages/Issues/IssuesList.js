@@ -791,11 +791,19 @@ export default function IssuesList({ officers }) {
         let url;
         switch (userObject?.type) {
             case 'user':
+<<<<<<< HEAD
                 url = `http://localhost:5000/api/v1/issues/user-issues/${userObject?.staffId}`;
                 setColumns(userColumns);
                 break;
             case 'officer':
                 url = `http://localhost:5000/api/v1/issues/technician-issues/${userObject?.staffId}`;
+=======
+                url = `http://localhost:5000/api/v1/issues/user-issues/${userObject.staffId}`;
+                setColumns(userColumns);
+                break;
+            case 'officer':
+                url = `http://localhost:5000/api/v1/issues/technician-issues/${userObject.staffId}`;
+>>>>>>> 16522116e73ed2849f7367c24a3e3427c93d56cc
                 setColumns(officerColumns);
                 break;
             case 'director':
@@ -803,7 +811,11 @@ export default function IssuesList({ officers }) {
                 setColumns(directorColumns);
                 break;
             case 'manager':
+<<<<<<< HEAD
                 url = `http://localhost:5000/api/v1/issues/manager-issues/${userObject?.unit}`;
+=======
+                url = `http://localhost:5000/api/v1/issues/manager-issues/${userObject.unit}`;
+>>>>>>> 16522116e73ed2849f7367c24a3e3427c93d56cc
                 setColumns(superUserColumns);
                 break;
             case 'superuser':
@@ -972,8 +984,13 @@ export default function IssuesList({ officers }) {
                                 {officersInUnit &&
                                     officersInUnit.map((officer, id) => {
                                         return (
+<<<<<<< HEAD
                                             <option key={id} value={officer?.staffId}>
                                                 {officer?.staffFullname}
+=======
+                                            <option key={id} value={officer.staffId}>
+                                                {officer.staffFullname}
+>>>>>>> 16522116e73ed2849f7367c24a3e3427c93d56cc
                                             </option>
                                         );
                                     })}
