@@ -1,155 +1,216 @@
 .pageWrapper {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 .contentArea {
-  flex-grow: 1;
-  max-width: 1300px;
-  margin: 0 auto;
+    flex-grow: 1;
+    max-width: 1300px;
+    margin: 0 auto;
 }
 .card {
-  box-shadow: $card-box-shadow;
-  margin-bottom: 30px;
+    box-shadow: $card-box-shadow;
+    margin-bottom: 30px;
 }
 
 .circle-box {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 100%;
-  &.lg-box {
-    width: 60px;
-    height: 60px;
-    font-size: 21px;
-    line-height: 60px;
-  }
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 100%;
+    &.lg-box {
+        width: 60px;
+        height: 60px;
+        font-size: 21px;
+        line-height: 60px;
+    }
 }
 .button-group .btn {
-  margin: 3px;
+    margin: 3px;
 }
 table th {
-  font-weight: 500;
+    font-weight: 500;
 }
 
 .App {
-  border: 2px solid #d3d3d3;
-  border-radius: .5em;
-  margin-bottom: 1em;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 100px;
-  padding: 1em;
-  text-align: left;
-  width: 600px;
-  border-color: green;
+    border: 2px solid #d3d3d3;
+    border-radius: 0.5em;
+    margin-bottom: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    padding: 1em;
+    text-align: left;
+    width: 600px;
+    border-color: green;
+}
+#go {
+    margin-top: 260px;
+    margin-left: -100px;
+    background-color: #031d04;
 }
 
 .form {
-  padding: 1em;
+    padding: 1em;
 }
-#color{
-  background-color: red;
-  margin-left: 40px;
+#color {
+    background-color: red;
+    margin-left: 40px;
 }
-
 
 .label {
-  font-weight: 600;
+    font-weight: 600;
 }
-#mov{
-  text-align: center;
-  color: green ;
-  font-family: Bold;
-
+#mov {
+    text-align: center;
+    color: green;
+    font-family: Bold;
 }
-#none{
-  margin-left: 190px;
+#none {
+    margin-left: 190px;
 }
-#log{
-  color: green ;
-  font-family: Bold;
-}
-
-#me{
-   color: white;
-}
-.push{
-  margin-top: 50px;
-}
-#move{
-  margin-left: 40px;
-  color: white;
-}
-#reset{
-  margin-left: 40px;
-}
-#list{
-   margin-top: 30px;
-}
-#search{
-  width: 20%;
-  margin-left: 900px;
-}
-.jump{
-  width: 20%;
-}
-#jump2{
-  width: 20%;
-  margin-left: 300px;
-  margin-top: -110px;
+#log {
+    color: green;
+    font-family: Bold;
 }
 
-#cono{
-  width: 20%;
-  margin-left:590px;
-  margin-top: -110px;
+#me {
+    color: white;
+}
+.push {
+    margin-top: 50px;
+}
+#move {
+    margin-left: 40px;
+    color: white;
+}
+#reset {
+    margin-left: 40px;
+}
+#list {
+    margin-top: 30px;
+}
+#search {
+    width: 20%;
+    margin-left: 900px;
+}
+.jump {
+    width: 20%;
+}
+#jump2 {
+    width: 20%;
+    margin-left: 300px;
+    margin-top: -110px;
 }
 
-#cant{
-  width: 20%;
-  margin-left: 900px;
-  margin-top: -110px;
+#cono {
+    width: 20%;
+    margin-left: 590px;
+    margin-top: -110px;
 }
-#marn{
-  height: 200px;
+
+#cant {
+    width: 20%;
+    margin-left: 900px;
+    margin-top: -110px;
 }
-#push{
-  margin-left: 340px;
-  margin-bottom: -60px;
+#marn {
+    height: 200px;
 }
-#margin{
-  width: 20%;
-  margin-left: 100px;
-  margin-top: -5px;
-  margin-bottom: -40px;
-  z-index: 1;
+#push {
+    margin-left: 340px;
+    margin-bottom: -60px;
 }
-#shift{
-  width: 20%;
-  margin-left: 100px;
-  margin-top: 5px;
-  margin-bottom: -40px;
-  z-index: 1;
+#margin {
+    width: 20%;
+    margin-left: 100px;
+    margin-top: -5px;
+    margin-bottom: -40px;
+    z-index: 1;
 }
-.sign{
-   margin-left: 50px;
+#shift {
+    width: 20%;
+    margin-left: 100px;
+    margin-top: 5px;
+    margin-bottom: -40px;
+    z-index: 1;
 }
-#btn{
-  width:20%;
-  margin-left: 400px;
-  margin-bottom: 4px;
-  background-color: darkgreen;
+.sign {
+    margin-left: 50px;
 }
-#move{
-  margin-bottom: 50px;
-  width: 20%;
-  margin-left: 400px;
-  margin-top: 10px;
+#btn {
+    width: 20%;
+    margin-left: 400px;
+    margin-bottom: 4px;
+    background-color: darkgreen;
 }
-#cardChange{
-  margin: 10px;
-  width: 40%;
+#move {
+    margin-bottom: 50px;
+    width: 20%;
+    margin-left: 400px;
+    margin-top: 10px;
 }
-#forgetPwd{
-  margin-top:20px;
+#cardChange {
+    margin: 10px;
+    width: 40%;
 }
+#forgetPwd {
+    margin-top: 20px;
+}
+.img {
+    background-image: url('../../images/klinik.jpg');
+    height: 699px;
+    background-size: 1550px;
+    // margin-right:300px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.header {
+    margin-top:65px;
+}
+.report{
+    padding: 100px;
+    margin-top: -30px;
+    width: 300%;
+    margin-left: -65px;
+}
+.list{
+    margin-top: -260px;
+}
+.editModal{
+    margin-top:80px;
+   border: #d3d3d3;
+   border-width: 100px;
+    
+}
+.edittor{
+    border-style: solid;
+    border-color: green;
+}
+.ceneter{
+    text-align: center;
+    font-weight: bold;
+}
+.text{
+    color: aliceblue;
+}
+.csv{
+    font-size: 20px;
+    text-align: center;
+}
+#btn-btn{
+    width: 20%;
+    margin-top: 30px;
+}
+#toast{
+    margin-top: 50px;
+    width: 20%;
+}
+#reportDesigner1{
+margin-top: 100px;
+padding: 170px;
+margin-left: 120px;
+}
+.list{
+   margin-top: -10px;
+}
+

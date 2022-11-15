@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Card, CardBody, CardHeader, Col, Container, Row } from 'reactstrap';
-import IssuesList from "./IssuesList"
+import IssuesList from './IssuesList';
 // import IssuesStatistics from "./IssuesStatistics"
- import IssuesStatistics from "../../dashboard/Default/index"
+import IssuesStatistics from '../../dashboard/Default/index';
 
 const Issues = () => {
     const userObject = JSON.parse(localStorage.getItem('userObject'));
@@ -17,14 +17,16 @@ const Issues = () => {
 
     return (
         <>
-            {userObject.type == "user" ? "" : <IssuesStatistics />}
-             {/* <IssuesStatistics />  */}
+            {userObject?.type == 'user' ? '' : <IssuesStatistics />}
+            {/* <IssuesStatistics />  */}
             <Container>
                 <Row>
                     <Col>
                         <Card>
                             <CardHeader className="bg-info text-white">Pending Issues</CardHeader>
-                            <CardBody><IssuesList /></CardBody>
+                            <CardBody>
+                                <IssuesList />
+                            </CardBody>
                         </Card>
                     </Col>
                 </Row>
