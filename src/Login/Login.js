@@ -98,7 +98,7 @@ export default function Login() {
 
     const checkStaffId = (e, operation) => {
         e.preventDefault();
-        let url = operation == "reset" ? `http://localhost:5000/api/v1/users/checkreset` :`http://localhost:5000/api/v1/users/check`
+        let url = operation == "reset" ? `http://10.5.17.18:5000/api/v1/users/checkreset` :`http://10.5.17.18:5000/api/v1/users/check`
         const myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
 

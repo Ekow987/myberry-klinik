@@ -91,7 +91,7 @@ export default function IssuesList({ officers }) {
 
     const getuserByUnit = async (unit) => {
         try {
-            let result = await fetch(`http://localhost:5000/api/v1/users/get-users-by-unit/${unit}`, {
+            let result = await fetch(`http://10.5.17.18:5000/api/v1/users/get-users-by-unit/${unit}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -791,23 +791,23 @@ export default function IssuesList({ officers }) {
         let url;
         switch (userObject?.type) {
             case 'user':
-                url = `http://localhost:5000/api/v1/issues/user-issues/${userObject.staffId}`;
+                url = `http://10.5.17.18:5000/api/v1/issues/user-issues/${userObject.staffId}`;
                 setColumns(userColumns);
                 break;
             case 'officer':
-                url = `http://localhost:5000/api/v1/issues/technician-issues/${userObject.staffId}`;
+                url = `http://10.5.17.18:5000/api/v1/issues/technician-issues/${userObject.staffId}`;
                 setColumns(officerColumns);
                 break;
             case 'director':
-                url = `http://localhost:5000/api/v1/issues/`;
+                url = `http://10.5.17.18:5000/api/v1/issues/`;
                 setColumns(directorColumns);
                 break;
             case 'manager':
-                url = `http://localhost:5000/api/v1/issues/manager-issues/${userObject.unit}`;
+                url = `http://10.5.17.18:5000/api/v1/issues/manager-issues/${userObject.unit}`;
                 setColumns(superUserColumns);
                 break;
             case 'superuser':
-                url = `http://localhost:5000/api/v1/issues/`;
+                url = `http://10.5.17.18:5000/api/v1/issues/`;
                 setColumns(superUserColumns);
                 break;
         }

@@ -26,7 +26,7 @@ export const officersList = async () => {
 }
 
 export const getStatistics = async () => {
-	let url = `http://localhost:5000/api/v1/issues/statistics`
+	let url = `http://10.5.17.18:5000/api/v1/issues/statistics`
 	try {
 		let result = await fetch(url, {
 			headers: {
